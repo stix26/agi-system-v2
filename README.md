@@ -1,31 +1,201 @@
-# AGI System Quick Start Guide
+# Advanced AGI System
 
-# Step 1: Install the System
-# Follow the installation instructions in INSTALL.md or use the commands below:
+A sophisticated artificial general intelligence system implemented in x86-64 assembly language. The system features advanced neural networks, memory management, decision making, and I/O handling capabilities.
+
+## Architecture
+
+The system consists of several key components:
+
+### Core Components
+
+#### Memory Management (`memory_manager.asm`)
+- Hierarchical memory structure (working and long-term)
+- Memory block management with priority levels
+- Garbage collection and defragmentation
+- Memory consolidation and cleanup
+
+#### Neural Network (`neural_network.asm`)
+- Multi-layer neural network implementation
+- Backpropagation and gradient descent
+- Activation functions and loss calculations
+- Weight optimization
+
+#### Decision Engine (`decision_engine.asm`)
+- Reinforcement learning capabilities
+- Policy and value networks
+- Experience replay buffer
+- Planning and simulation
+
+#### I/O Handler (`io_handler.asm`)
+- Multi-modal input/output support
+- Stream-based processing
+- Efficient buffer management
+- Modality-specific handlers
+
+### Supporting Components
+
+#### Math Operations (`math.asm`)
+- Matrix operations
+- Vector calculations
+- Statistical functions
+- Optimization algorithms
+
+#### Memory Operations (`memory_ops.asm`)
+- Memory block operations
+- Data structure management
+- Memory alignment
+- Cache optimization
+
+#### Utilities (`utils.asm`)
+- System utilities
+- Helper functions
+- Debugging tools
+- Performance monitoring
+
+## Building
+
+### Prerequisites
+- NASM 2.15.05 or later
+- GNU Make 4.3 or later
+- GNU Linker (ld) 2.38 or later
+- GDB 12.1 or later (for debugging)
+- Python 3.8+ (for build scripts)
+
+### Build Steps
+1. Clone the repository:
+```bash
 git clone https://github.com/stix26/agi-system.git
 cd agi-system
-sudo apt update
-sudo apt install nasm python3 python3-pip
-bash tools/build.sh
+```
 
-# Step 2: Run the System
-# Execute the compiled binary with the default configuration and input files:
-bash tools/run.sh
+2. Build the system:
+```bash
+make clean
+make all
+```
 
-# Step 3: Explore Examples
-# Navigate to the examples folder to view sample input and output files:
-cd examples
+3. Run the system:
+```bash
+make run
+```
 
-# Step 4: Generate Input Data Using Python
-# Use the provided Python script to generate random input data:
-python3 -c "import random; f = open('generated_input.txt', 'w'); [f.write(f'{random.randint(0, 10)} {random.randint(0, 10)}\\n') for _ in range(10)]; f.close()"
+4. Debug the system:
+```bash
+make debug
+```
 
-# Step 5: Run the System with Custom Input
-# Use the generated input file to run the system:
-./agi_system config/system_config.cfg examples/generated_input.txt
+## Installation
 
-# Step 6: Check Logs
-# View logs for debugging or system output:
-cat logs/agi.log
+To install the system globally:
+```bash
+sudo make install
+```
 
-# For more details, refer to the README.md and USAGE.md files.
+To uninstall:
+```bash
+sudo make uninstall
+```
+
+## Usage
+
+The system can be used in several ways:
+
+1. Standalone mode:
+```bash
+./build/agi_system
+```
+
+2. Debug mode:
+```bash
+make debug
+```
+
+3. With custom configuration:
+```bash
+./build/agi_system --config config.json
+```
+
+## Configuration
+
+The system can be configured through various parameters:
+
+- Memory parameters:
+  - Working memory size
+  - Long-term memory size
+  - Block size
+  - Priority levels
+
+- Neural network parameters:
+  - Layer sizes
+  - Learning rates
+  - Activation functions
+  - Optimization settings
+
+- Decision parameters:
+  - Exploration rate
+  - Discount factor
+  - Batch size
+  - Update frequency
+
+- I/O parameters:
+  - Buffer sizes
+  - Timeouts
+  - Stream configurations
+  - Error handling
+
+## Development
+
+### Adding New Features
+
+1. Create new assembly file in `src/core/` directory
+2. Add dependencies in Makefile
+3. Implement functionality
+4. Update main program to integrate new feature
+
+### Debugging
+
+1. Use GDB for debugging:
+```bash
+make debug
+```
+
+2. Set breakpoints:
+```bash
+(gdb) break main
+(gdb) run
+```
+
+3. Inspect memory:
+```bash
+(gdb) x/10x $rsp
+```
+
+## Performance
+
+The system is optimized for:
+- Low latency processing
+- Efficient memory usage
+- Parallel computation
+- Real-time response
+
+## Contributing
+
+1. Fork the repository
+2. Create feature branch
+3. Commit changes
+4. Push to branch
+5. Create pull request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- Thanks to all contributors
+- Inspired by various AGI research
+- Built with modern assembly techniques
+
+## Contact
+
+For questions and support, please open an issue on GitHub.

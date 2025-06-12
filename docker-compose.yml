@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  agi-system:
+    build: .
+    volumes:
+      - ./src:/app/src
+      - ./build:/app/build
+    tty: true
+    stdin_open: true 
