@@ -9,12 +9,12 @@ LDFLAGS = -no-pie
 SRC_DIR = src
 BUILD_DIR = build
 CORE_DIR = $(SRC_DIR)/core
-UTILS_DIR = $(SRC_DIR)/utils
+UTILS_DIR = $(SRC_DIR)
 LIB_DIR = $(SRC_DIR)/lib
 
 # Source files
 CORE_SRCS = $(wildcard $(CORE_DIR)/*.asm)
-UTILS_SRCS = $(wildcard $(UTILS_DIR)/*.asm)
+UTILS_SRCS =
 LIB_SRCS = $(wildcard $(LIB_DIR)/*.asm)
 MAIN_SRC = $(SRC_DIR)/main.asm
 
@@ -74,13 +74,4 @@ install: $(BIN)
 uninstall:
 	rm -f /usr/local/bin/$(BIN)
 
-# Dependencies
-$(SRC_DIR)/main.o: $(SRC_DIR)/main.asm $(SRC_DIR)/attention.asm $(SRC_DIR)/memory.asm $(SRC_DIR)/decision.asm $(SRC_DIR)/io.asm
-$(SRC_DIR)/attention.o: $(SRC_DIR)/attention.asm
-$(SRC_DIR)/memory.o: $(SRC_DIR)/memory.asm
-$(SRC_DIR)/decision.o: $(SRC_DIR)/decision.asm $(SRC_DIR)/neural_network.asm $(SRC_DIR)/memory_manager.asm
-$(SRC_DIR)/io.o: $(SRC_DIR)/io.asm
-$(SRC_DIR)/neural_network.o: $(SRC_DIR)/neural_network.asm
-$(SRC_DIR)/memory_manager.o: $(SRC_DIR)/memory_manager.asm
-
-.PHONY: all clean run debug install uninstall 
+.PHONY: all clean run debug install uninstall
