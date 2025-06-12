@@ -1,6 +1,8 @@
 
 ## AGI Assembly Application: User Guide
 
+> **Notice**: This guide describes features that are not fully implemented in the current repository. Many sections reference placeholder functionality.
+
 Welcome to the AGI Assembly application! This guide will help you understand how to use the application effectively to meet your needs in legal, medical, and crisis management domains.
 
 ---

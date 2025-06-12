@@ -2,6 +2,8 @@
 
 A sophisticated artificial general intelligence system implemented in x86-64 assembly language. The system features advanced neural networks, memory management, decision making, and I/O handling capabilities.
 
+> **Note**: This repository is experimental and many modules are only placeholders. The code demonstrates initialization and shutdown logic but does **not** provide a complete AGI implementation.
+
 ## Architecture
 
 The system consists of several key components:
@@ -221,7 +223,8 @@ The system is optimized for:
 This repository is a proof of concept. Many components are placeholders or
 stubs intended for experimentation. The current assembly implementation only
 demonstrates initialization and shutdown sequences. Advanced features described
-in the documentation are not fully implemented.
+in the documentation are not fully implemented. **Do not rely on this code for
+production use.**
 
 ## Contributing
 

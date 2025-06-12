@@ -1,5 +1,7 @@
 # AGI System Usage Guide
 
+> **Important**: The commands below target features that have not been fully implemented. Expect only initialization and shutdown behavior when running the current code.
+
 ## Basic Usage
 
 ### Running the System

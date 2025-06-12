@@ -27,6 +27,9 @@
 #    under their respective open-source licenses and remain the intellectual
 #    property of their original authors.
 
+# This software is a proof-of-concept with many placeholder modules.
+# It is provided for experimentation only and is not production ready.
+
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
