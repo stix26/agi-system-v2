@@ -133,4 +133,3 @@ This Code of Conduct is adapted from the [Contributor Covenant](https://www.cont
 ---
 
 By contributing to this project, you agree to abide by the Code of Conduct and the terms of the MIT License with additional conditions, as outlined in the repository.
-EOL
