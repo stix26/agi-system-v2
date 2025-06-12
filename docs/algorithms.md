@@ -58,3 +58,6 @@
   - Gradient descent
   - Newton's method
   - Conjugate gradient
+  - Simulated annealing
+
+These algorithms form the basis for the system's adaptive behavior.

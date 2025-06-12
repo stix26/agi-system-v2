@@ -2,26 +2,25 @@
 
 # Compiler and flags
 ASM = nasm
+UNAME_S := $(shell uname -s)
 ASMFLAGS = -f elf64
 LDFLAGS = -no-pie
+ifeq ($(UNAME_S),Darwin)
+    ASMFLAGS = -f macho64
+    LDFLAGS = -macosx_version_min 10.13 -lSystem
+endif
 
 # Directories
 SRC_DIR = src
 BUILD_DIR = build
 CORE_DIR = $(SRC_DIR)/core
-UTILS_DIR = $(SRC_DIR)/utils
-LIB_DIR = $(SRC_DIR)/lib
 
 # Source files
 CORE_SRCS = $(wildcard $(CORE_DIR)/*.asm)
-UTILS_SRCS = $(wildcard $(UTILS_DIR)/*.asm)
-LIB_SRCS = $(wildcard $(LIB_DIR)/*.asm)
 MAIN_SRC = $(SRC_DIR)/main.asm
 
 # Object files
 CORE_OBJS = $(CORE_SRCS:$(CORE_DIR)/%.asm=$(BUILD_DIR)/%.o)
-UTILS_OBJS = $(UTILS_SRCS:$(UTILS_DIR)/%.asm=$(BUILD_DIR)/%.o)
-LIB_OBJS = $(LIB_SRCS:$(LIB_DIR)/%.asm=$(BUILD_DIR)/%.o)
 MAIN_OBJ = $(BUILD_DIR)/main.o
 
 # Target executable
@@ -38,20 +37,13 @@ $(BUILD_DIR):
 $(BUILD_DIR)/%.o: $(CORE_DIR)/%.asm | $(BUILD_DIR)
 	$(ASM) $(ASMFLAGS) $< -o $@
 
-# Compile utility components
-$(BUILD_DIR)/%.o: $(UTILS_DIR)/%.asm | $(BUILD_DIR)
-	$(ASM) $(ASMFLAGS) $< -o $@
-
-# Compile library components
-$(BUILD_DIR)/%.o: $(LIB_DIR)/%.asm | $(BUILD_DIR)
-	$(ASM) $(ASMFLAGS) $< -o $@
 
 # Compile main program
 $(MAIN_OBJ): $(MAIN_SRC) | $(BUILD_DIR)
 	$(ASM) $(ASMFLAGS) $< -o $@
 
 # Link everything together
-$(TARGET): $(MAIN_OBJ) $(CORE_OBJS) $(UTILS_OBJS) $(LIB_OBJS)
+$(TARGET): $(MAIN_OBJ) $(CORE_OBJS)
 	ld $^ -o $@ $(LDFLAGS)
 
 # Clean build files
@@ -63,24 +55,15 @@ run: $(TARGET)
 	./$(TARGET)
 
 # Debug the system
-debug: $(BIN)
-	gdb $(BIN)
+debug: $(TARGET)
+	gdb $(TARGET)
 
 # Install system
-install: $(BIN)
-	install -m 755 $(BIN) /usr/local/bin/
+install: $(TARGET)
+	install -m 755 $(TARGET) /usr/local/bin/agi_system
 
 # Uninstall system
 uninstall:
-	rm -f /usr/local/bin/$(BIN)
+	rm -f /usr/local/bin/agi_system
 
-# Dependencies
-$(SRC_DIR)/main.o: $(SRC_DIR)/main.asm $(SRC_DIR)/attention.asm $(SRC_DIR)/memory.asm $(SRC_DIR)/decision.asm $(SRC_DIR)/io.asm
-$(SRC_DIR)/attention.o: $(SRC_DIR)/attention.asm
-$(SRC_DIR)/memory.o: $(SRC_DIR)/memory.asm
-$(SRC_DIR)/decision.o: $(SRC_DIR)/decision.asm $(SRC_DIR)/neural_network.asm $(SRC_DIR)/memory_manager.asm
-$(SRC_DIR)/io.o: $(SRC_DIR)/io.asm
-$(SRC_DIR)/neural_network.o: $(SRC_DIR)/neural_network.asm
-$(SRC_DIR)/memory_manager.o: $(SRC_DIR)/memory_manager.asm
-
-.PHONY: all clean run debug install uninstall 
+.PHONY: all clean run debug install uninstall

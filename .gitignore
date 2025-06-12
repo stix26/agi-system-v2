@@ -1,0 +1,10 @@
+# Build artifacts
+build/
+*.o
+
+# Python caches
+__pycache__/
+*.pyc
+
+# Logs
+*.log

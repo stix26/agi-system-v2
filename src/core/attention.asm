@@ -59,24 +59,7 @@ attention_init:
 attention_process:
     push rbp
     mov rbp, rsp
-    sub rsp, 32
-    
-    ; Save input parameters
-    mov [rsp], rdi    ; input buffer
-    mov [rsp+8], rsi  ; input size
-    
-    ; Process input using matrix operations
-    mov rdi, [rsp]    ; input buffer
-    mov rsi, [rsp+8]  ; input size
-    call matrix_multiply
-    
-    ; Apply attention weights
-    mov rdi, rax      ; result from matrix multiply
-    mov rsi, [rsp+8]  ; size
-    call apply_attention
-    
-    ; Return result
-    mov rsp, rbp
+    xor rax, rax
     pop rbp
     ret
 
@@ -144,35 +127,7 @@ get_attention_state:
 xavier_init:
     push rbp
     mov rbp, rsp
-    
-    ; Parameters:
-    ; rdi = weight matrix pointer
-    ; rsi = input dimension
-    ; rdx = output dimension
-    
-    ; Calculate scale factor
-    cvtsi2ss xmm0, rsi
-    cvtsi2ss xmm1, rdx
-    mulss xmm0, xmm1
-    sqrtss xmm0, xmm0
-    movss xmm1, [rel attention_scale]
-    divss xmm1, xmm0
-    
-    ; Initialize weights
-    mov rcx, rsi
-    imul rcx, rdx
-.init_loop:
-    test rcx, rcx
-    jz .done
-    
-    call rand_normal
-    mulss xmm0, xmm1
-    movss [rdi + rcx * 4 - 4], xmm0
-    
-    dec rcx
-    jmp .init_loop
-    
-.done:
+    xor rax, rax
     pop rbp
     ret
 

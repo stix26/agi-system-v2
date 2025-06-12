@@ -20,7 +20,7 @@ The system consists of several key components:
 - Activation functions and loss calculations
 - Weight optimization
 
-#### Decision Engine (`decision_engine.asm`)
+#### Decision Engine (`decision.asm`)
 - Reinforcement learning capabilities
 - Policy and value networks
 - Experience replay buffer
@@ -34,19 +34,19 @@ The system consists of several key components:
 
 ### Supporting Components
 
-#### Math Operations (`math.asm`)
+#### Math Utilities
 - Matrix operations
 - Vector calculations
 - Statistical functions
 - Optimization algorithms
 
-#### Memory Operations (`memory_ops.asm`)
+#### Memory Operations
 - Memory block operations
 - Data structure management
 - Memory alignment
 - Cache optimization
 
-#### Utilities (`utils.asm`)
+#### Utilities (`core/utils.asm`)
 - System utilities
 - Helper functions
 - Debugging tools
@@ -73,6 +73,8 @@ cd agi-system
 make clean
 make all
 ```
+
+On macOS, the Makefile automatically switches to Mach-O output when `uname` reports `Darwin`. Ensure Xcode command line tools are installed so that `ld` and `clang` are available.
 
 3. Run the system:
 ```bash
@@ -114,6 +116,42 @@ make debug
 ```bash
 ./build/agi_system --config config.json
 ```
+
+## Docker
+
+The repository provides a `Dockerfile` and a `docker-compose.yml` for
+containerized builds. Using Docker ensures the correct toolchain is
+available and isolates the AGI system from the host environment.
+
+### Build the image
+```bash
+docker build -t agi-system .
+```
+
+### Run the container
+```bash
+docker run --rm agi-system
+```
+
+Or start the service with Docker Compose:
+```bash
+docker-compose up
+```
+
+## Python Integration
+
+Advanced training utilities are provided in the `python/` directory. These
+scripts leverage modern machine learning frameworks to experiment with
+reinforcement learning and transformer models outside of the core assembly
+runtime.
+
+### Example: PPO Agent
+```bash
+pip install -r requirements.txt
+python python/ppo_agent.py
+```
+This launches a small PPO trainer for the CartPole environment and prints the
+episode rewards.
 
 ## Configuration
 
@@ -177,6 +215,13 @@ The system is optimized for:
 - Efficient memory usage
 - Parallel computation
 - Real-time response
+
+## Project Status
+
+This repository is a proof of concept. Many components are placeholders or
+stubs intended for experimentation. The current assembly implementation only
+demonstrates initialization and shutdown sequences. Advanced features described
+in the documentation are not fully implemented.
 
 ## Contributing
 
