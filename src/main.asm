@@ -16,6 +16,8 @@ section .data
     io_init_msg_len equ $ - io_init_msg
     ready_msg db "System ready for operation.", 10
     ready_msg_len equ $ - ready_msg
+    shutdown_msg db "System shutting down.", 10
+    shutdown_msg_len equ $ - shutdown_msg
     
     ; Error messages
     error_init_msg db "Error: System initialization failed", 10
@@ -45,21 +47,25 @@ section .data
     system_buffer_size equ 4096
     
     ; Constants
-    max_iterations dq 1000
+    max_iterations dq 1
     iteration_count dq 0
 
     ; Error codes
     ERROR_NONE equ 0
     ERROR_INIT equ 1
     ERROR_RUNTIME equ 2
+    ERROR_COMPONENT equ 3
 
     ; Process input configuration
     num_streams equ 8
+    max_streams equ num_streams
     max_buffer_size equ 4096
     
     ; Buffers
     input_buffers: times (num_streams * max_buffer_size) db 0
     output_buffers: times (num_streams * max_buffer_size) db 0
+    stream_states: times max_streams dq 0
+    stream_modes: times max_streams dq 0
 
     ; Constants
     max_input_size equ 1024
@@ -91,6 +97,31 @@ section .text
     extern memory_process
     extern decision_process
     extern io_process
+    extern shutdown_io
+    extern shutdown_decision
+    extern cleanup_memory
+    extern cleanup_attention
+    extern read_input
+    extern process_neural_input
+    extern store_memory
+    extern get_decision_action
+    extern format_output
+    extern write_output
+    extern get_attention_state
+    extern get_memory_state
+    extern get_decision_state
+    extern combine_states
+    extern apply_action_constraints
+    extern check_termination_signal
+    extern check_error_condition
+    extern check_goal_condition
+    extern update_weights
+    extern train_network
+    extern make_decision
+    extern generate_output
+    extern write_stream
+    extern cleanup_io_handler
+    extern cleanup_decision_engine
 
 _start:
     push rbp
@@ -108,20 +139,20 @@ _start:
     jnz .error
     
     ; Exit with success
-    mov rax, 0x2000001  ; syscall exit
+    mov rax, 60         ; syscall exit
     xor rdi, rdi        ; exit code 0
     syscall
     
 .error:
     ; Write error message
-    mov rax, 0x2000004  ; syscall write
+    mov rax, 1          ; syscall write
     mov rdi, 2          ; stderr
     lea rsi, [rel error_runtime_msg]
     mov rdx, error_runtime_msg_len
     syscall
     
     ; Exit with error
-    mov rax, 0x2000001  ; syscall exit
+    mov rax, 60         ; syscall exit
     mov rdi, 1          ; exit code 1
     syscall
 
@@ -130,6 +161,11 @@ init_system:
     push rbp
     mov rbp, rsp
     sub rsp, 32
+
+    ; Print initialization message
+    lea rdi, [rel init_msg]
+    mov rsi, init_msg_len
+    call write_output
     
     ; Initialize components
     call attention_init
@@ -150,7 +186,12 @@ init_system:
     
     ; Mark system as initialized
     mov byte [rel system_initialized], 1
-    
+
+    ; Print ready message
+    lea rdi, [rel ready_msg]
+    mov rsi, ready_msg_len
+    call write_output
+
     ; Return success
     xor rax, rax
     mov rsp, rbp
@@ -159,7 +200,7 @@ init_system:
     
 .error:
     ; Write error message
-    mov rax, 0x2000004  ; syscall write
+    mov rax, 1          ; syscall write
     mov rdi, 2          ; stderr
     lea rsi, [rel error_init_msg]
     mov rdx, error_init_msg_len
@@ -182,6 +223,11 @@ run_system:
     
     ; Mark system as running
     mov byte [rel system_running], 1
+
+    ; Indicate start of main loop
+    lea rdi, [rel system_version]
+    mov rsi, system_version_len
+    call write_output
     
     ; Main system loop
     mov qword [rel iteration_count], 0
@@ -231,7 +277,14 @@ run_system:
 .done:
     ; Mark system as not running
     mov byte [rel system_running], 0
-    
+
+    ; Print shutdown message
+    lea rdi, [rel shutdown_msg]
+    mov rsi, shutdown_msg_len
+    call write_output
+
+    xor rax, rax
+
     mov rsp, rbp
     pop rbp
     ret
@@ -321,7 +374,8 @@ process_output:
     ; Get decision output
     mov rdi, output_buffers
     mov rax, rcx
-    mul max_buffer_size
+    mov rdx, max_buffer_size
+    mul rdx
     add rdi, rax  ; Buffer
     mov rsi, max_buffer_size  ; Buffer size
     call get_decision_action
@@ -331,7 +385,8 @@ process_output:
     ; Format output
     mov rdi, output_buffers
     mov rax, rcx
-    mul max_buffer_size
+    mov rdx, max_buffer_size
+    mul rdx
     add rdi, rax  ; Output buffer
     mov rsi, max_buffer_size  ; Buffer size
     mov rdx, rcx  ; Stream index
@@ -343,7 +398,8 @@ process_output:
     mov rdi, rcx  ; Stream index
     mov rsi, output_buffers
     mov rax, rcx
-    mul max_buffer_size
+    mov rdx, max_buffer_size
+    mul rdx
     add rsi, rax  ; Buffer
     mov rdx, max_buffer_size  ; Buffer size
     call write_output
@@ -467,7 +523,7 @@ update_neural_network:
     ret
 
 ; Make decisions based on current state
-make_decision:
+make_decision_step:
     push rbp
     mov rbp, rsp
     
@@ -507,7 +563,7 @@ generate_system_output:
     ; Generate output
     lea rdi, [system_buffer]
     mov rsi, system_buffer_size
-    mov rdx, [stream_modalities + rcx * 8]
+    mov rdx, [stream_modes + rcx * 8]
     call generate_output
     test rax, rax
     jnz .error

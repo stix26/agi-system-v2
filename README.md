@@ -74,6 +74,8 @@ make clean
 make all
 ```
 
+On macOS, the Makefile automatically switches to Mach-O output when `uname` reports `Darwin`. Ensure Xcode command line tools are installed so that `ld` and `clang` are available.
+
 3. Run the system:
 ```bash
 make run
@@ -113,6 +115,27 @@ make debug
 3. With custom configuration:
 ```bash
 ./build/agi_system --config config.json
+```
+
+## Docker
+
+The repository provides a `Dockerfile` and a `docker-compose.yml` for
+containerized builds. Using Docker ensures the correct toolchain is
+available and isolates the AGI system from the host environment.
+
+### Build the image
+```bash
+docker build -t agi-system .
+```
+
+### Run the container
+```bash
+docker run --rm agi-system
+```
+
+Or start the service with Docker Compose:
+```bash
+docker-compose up
 ```
 
 ## Configuration
