@@ -27,6 +27,7 @@ sudo apt install nasm make binutils gdb python3 python3-pip
 ```bash
 brew install nasm make binutils gdb python3
 ```
+The Makefile detects macOS automatically and assembles with Mach-O output. Ensure the Xcode command line tools are installed to provide the `ld` and `clang` linker utilities.
 
 ### Step 3: Build the System
 ```bash

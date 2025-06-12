@@ -107,3 +107,35 @@
 - Stack traces
 - Memory dumps
 - Performance profiles
+
+## Docker Usage
+
+Build the container image and run the system in an isolated environment.
+
+```bash
+docker build -t agi-system ..
+docker run --rm agi-system
+```
+
+Alternatively use Docker Compose:
+
+```bash
+docker-compose up
+```
+
+## Support
+
+For more examples and troubleshooting tips, see the README or open an issue on GitHub.
+
+## Project Status
+
+This guide describes intended functionality. The current implementation is a
+minimal demonstration that initializes and shuts down without performing real
+AGI tasks.
+
+## Python Utilities
+
+The `python/` directory provides experimental scripts that use PyTorch and
+Gymnasium for rapid prototyping. Run `python/ppo_agent.py` to try the PPO
+trainer on CartPole.
+

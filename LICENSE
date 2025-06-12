@@ -23,6 +23,9 @@
 # 4. If the Software is used in research or academic work, proper citation
 #    must be provided, and the original authors must be credited in any
 #    resulting publications or presentations.
+# 5. Third-party Python packages included with this project are distributed
+#    under their respective open-source licenses and remain the intellectual
+#    property of their original authors.
 
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
