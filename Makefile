@@ -63,15 +63,15 @@ run: $(TARGET)
 	./$(TARGET)
 
 # Debug the system
-debug: $(BIN)
-	gdb $(BIN)
+debug: $(TARGET)
+	gdb $(TARGET)
 
 # Install system
-install: $(BIN)
-	install -m 755 $(BIN) /usr/local/bin/
+install: $(TARGET)
+	install -m 755 $(TARGET) /usr/local/bin/
 
 # Uninstall system
 uninstall:
-	rm -f /usr/local/bin/$(BIN)
+	rm -f /usr/local/bin/$(TARGET)
 
 .PHONY: all clean run debug install uninstall
