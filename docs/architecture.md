@@ -3,6 +3,8 @@
 ## System Overview
 The AGI system is built with a modular architecture in x86-64 assembly language, focusing on performance and efficiency. The system is organized into core components and supporting modules.
 
+> **Warning**: This documentation describes intended functionality. Much of the actual codebase contains placeholder routines that do not implement these features yet.
+
 ## Core Components
 
 ### Memory Management System
@@ -75,5 +77,4 @@ The AGI system is built with a modular architecture in x86-64 assembly language,
 - `docs/`: Additional documentation and guides.
 - `python/`: Experimental high-level machine learning code.
 
-Note: Many components are currently placeholders and subject to change.
-Refer to the README for a detailed explanation of each module.
+Note: Many components are currently placeholders and subject to change. Refer to the README for a detailed explanation of each module. These stubs exist only to outline the intended architecture and should not be considered working implementations.

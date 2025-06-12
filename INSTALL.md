@@ -1,5 +1,7 @@
 # AGI System Installation Guide
 
+> **Disclaimer**: This installation process targets an incomplete prototype. Expect placeholder behavior when running the resulting binaries.
+
 ## Prerequisites
 - NASM (Netwide Assembler) 2.15.05 or later
 - GNU Make 4.3 or later

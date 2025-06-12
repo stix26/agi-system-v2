@@ -1,6 +1,6 @@
 ## Contributing to the AGI Assembly Application
 
-Thank you for your interest in contributing to the AGI Assembly application! This project is designed to provide advanced, reliable, and ethical AI-driven solutions for legal, medical, and crisis management domains. Contributions are essential to improving the application and ensuring it meets the highest standards of accuracy, usability, and compliance.
+Thank you for your interest in contributing to the AGI Assembly application! This project is designed to provide advanced, reliable, and ethical AI-driven solutions for legal, medical, and crisis management domains. **Please note that many current modules are placeholders.** Contributions are essential to improving the application and ensuring it meets the highest standards of accuracy, usability, and compliance.
 
 By contributing, you agree to adhere to the guidelines and Code of Conduct outlined below.
 

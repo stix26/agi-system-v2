@@ -1,5 +1,7 @@
 # AGI System Algorithms
 
+> **Note**: This document outlines algorithms planned for the project. The current codebase contains only placeholder routines.
+
 ## Memory Management
 - Hierarchical memory structure with working and long-term memory
 - Priority-based memory allocation
