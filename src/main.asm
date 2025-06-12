@@ -45,21 +45,25 @@ section .data
     system_buffer_size equ 4096
     
     ; Constants
-    max_iterations dq 1000
+    max_iterations dq 1
     iteration_count dq 0
 
     ; Error codes
     ERROR_NONE equ 0
     ERROR_INIT equ 1
     ERROR_RUNTIME equ 2
+    ERROR_COMPONENT equ 3
 
     ; Process input configuration
     num_streams equ 8
+    max_streams equ num_streams
     max_buffer_size equ 4096
     
     ; Buffers
     input_buffers: times (num_streams * max_buffer_size) db 0
     output_buffers: times (num_streams * max_buffer_size) db 0
+    stream_states: times max_streams dq 0
+    stream_modes: times max_streams dq 0
 
     ; Constants
     max_input_size equ 1024
@@ -91,6 +95,31 @@ section .text
     extern memory_process
     extern decision_process
     extern io_process
+    extern shutdown_io
+    extern shutdown_decision
+    extern cleanup_memory
+    extern cleanup_attention
+    extern read_input
+    extern process_neural_input
+    extern store_memory
+    extern get_decision_action
+    extern format_output
+    extern write_output
+    extern get_attention_state
+    extern get_memory_state
+    extern get_decision_state
+    extern combine_states
+    extern apply_action_constraints
+    extern check_termination_signal
+    extern check_error_condition
+    extern check_goal_condition
+    extern update_weights
+    extern train_network
+    extern make_decision
+    extern generate_output
+    extern write_stream
+    extern cleanup_io_handler
+    extern cleanup_decision_engine
 
 _start:
     push rbp
@@ -108,20 +137,20 @@ _start:
     jnz .error
     
     ; Exit with success
-    mov rax, 0x2000001  ; syscall exit
+    mov rax, 60         ; syscall exit
     xor rdi, rdi        ; exit code 0
     syscall
     
 .error:
     ; Write error message
-    mov rax, 0x2000004  ; syscall write
+    mov rax, 1          ; syscall write
     mov rdi, 2          ; stderr
     lea rsi, [rel error_runtime_msg]
     mov rdx, error_runtime_msg_len
     syscall
     
     ; Exit with error
-    mov rax, 0x2000001  ; syscall exit
+    mov rax, 60         ; syscall exit
     mov rdi, 1          ; exit code 1
     syscall
 
@@ -159,7 +188,7 @@ init_system:
     
 .error:
     ; Write error message
-    mov rax, 0x2000004  ; syscall write
+    mov rax, 1          ; syscall write
     mov rdi, 2          ; stderr
     lea rsi, [rel error_init_msg]
     mov rdx, error_init_msg_len
@@ -231,7 +260,9 @@ run_system:
 .done:
     ; Mark system as not running
     mov byte [rel system_running], 0
-    
+
+    xor rax, rax
+
     mov rsp, rbp
     pop rbp
     ret
@@ -321,7 +352,8 @@ process_output:
     ; Get decision output
     mov rdi, output_buffers
     mov rax, rcx
-    mul max_buffer_size
+    mov rdx, max_buffer_size
+    mul rdx
     add rdi, rax  ; Buffer
     mov rsi, max_buffer_size  ; Buffer size
     call get_decision_action
@@ -331,7 +363,8 @@ process_output:
     ; Format output
     mov rdi, output_buffers
     mov rax, rcx
-    mul max_buffer_size
+    mov rdx, max_buffer_size
+    mul rdx
     add rdi, rax  ; Output buffer
     mov rsi, max_buffer_size  ; Buffer size
     mov rdx, rcx  ; Stream index
@@ -343,7 +376,8 @@ process_output:
     mov rdi, rcx  ; Stream index
     mov rsi, output_buffers
     mov rax, rcx
-    mul max_buffer_size
+    mov rdx, max_buffer_size
+    mul rdx
     add rsi, rax  ; Buffer
     mov rdx, max_buffer_size  ; Buffer size
     call write_output
@@ -467,7 +501,7 @@ update_neural_network:
     ret
 
 ; Make decisions based on current state
-make_decision:
+make_decision_step:
     push rbp
     mov rbp, rsp
     
@@ -507,7 +541,7 @@ generate_system_output:
     ; Generate output
     lea rdi, [system_buffer]
     mov rsi, system_buffer_size
-    mov rdx, [stream_modalities + rcx * 8]
+    mov rdx, [stream_modes + rcx * 8]
     call generate_output
     test rax, rax
     jnz .error

@@ -115,6 +115,27 @@ make debug
 ./build/agi_system --config config.json
 ```
 
+## Docker
+
+The repository provides a `Dockerfile` and a `docker-compose.yml` for
+containerized builds. Using Docker ensures the correct toolchain is
+available and isolates the AGI system from the host environment.
+
+### Build the image
+```bash
+docker build -t agi-system .
+```
+
+### Run the container
+```bash
+docker run --rm agi-system
+```
+
+Or start the service with Docker Compose:
+```bash
+docker-compose up
+```
+
 ## Configuration
 
 The system can be configured through various parameters:
