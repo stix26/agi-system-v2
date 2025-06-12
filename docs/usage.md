@@ -107,3 +107,7 @@
 - Stack traces
 - Memory dumps
 - Performance profiles
+
+## Support
+
+For more examples and troubleshooting tips, see the README or open an issue on GitHub.
