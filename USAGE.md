@@ -86,6 +86,7 @@ Welcome to the AGI Assembly application! This guide will help you understand how
    - Ensure your subscription includes the "Live Updates" feature.
 
 ---
+After running the program, you should see initialization, running, and shutdown messages printed to the terminal.
 
 ### Support
 

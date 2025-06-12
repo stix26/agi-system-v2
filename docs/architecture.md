@@ -72,4 +72,7 @@ The AGI system is built with a modular architecture in x86-64 assembly language,
 ## Folder Structure
 - `src/`: Core source code.
 - `config/`: Configuration files for system settings.
-- `
+- `docs/`: Additional documentation and guides.
+
+Note: Many components are currently placeholders and subject to change.
+Refer to the README for a detailed explanation of each module.
