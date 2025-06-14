@@ -7,4 +7,14 @@ services:
       - ./src:/app/src
       - ./build:/app/build
     tty: true
-    stdin_open: true 
+    stdin_open: true
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    ports:
+      - '3306:3306'

@@ -244,3 +244,18 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## Contact
 
 For questions and support, please open an issue on GitHub.
+
+### SQL Server
+
+A lightweight MySQL server is included via `docker-compose`. Start the services with:
+```bash
+docker-compose up
+```
+This launches the AGI system container alongside a MySQL 8.0 instance. Alternatively, you can start a local server directly:
+```bash
+./tools/start_mysql.sh
+```
+After the server is running you can test the connection using:
+```bash
+python python/db_test.py
+```
