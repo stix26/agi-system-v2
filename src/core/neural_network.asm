@@ -112,8 +112,8 @@ neural_network_main:
     ; Copy output
     mov rdi, [rsp+16]   ; Output buffer
     lea rsi, [rel output_layer]
-    mov rdx, OUTPUT_SIZE * 4
-    call memcpy
+    mov rcx, OUTPUT_SIZE
+    call copy_output_data
     
     xor rax, rax        ; Success
     jmp .done
@@ -440,6 +440,27 @@ update_weights:
     call update_weight_matrix
     
     xor rax, rax  ; Success
+    pop rbp
+    ret
+
+; Copy output data function
+copy_output_data:
+    push rbp
+    mov rbp, rsp
+    
+    ; Parameters: rdi = destination, rsi = source, rcx = count (in floats)
+    test rcx, rcx
+    jz .done
+    
+.copy_loop:
+    movss xmm0, [rsi]
+    movss [rdi], xmm0
+    add rsi, 4
+    add rdi, 4
+    dec rcx
+    jnz .copy_loop
+    
+.done:
     pop rbp
     ret
 

@@ -11,6 +11,7 @@ section .data
 section .text
     global matrix_multiply
     global memcpy
+    global memset
     global rand_float
     global rand_normal
     global matrix_transpose
@@ -115,6 +116,28 @@ memcpy:
     
     ; Copy data
     rep movsb
+    
+    mov rax, rbx  ; return destination
+    
+    pop rbx
+    pop rbp
+    ret
+
+    ; Memory set: set memory to value
+    ; rdi = destination pointer
+    ; rsi = value (byte)
+    ; rdx = number of bytes
+memset:
+    push rbp
+    mov rbp, rsp
+    push rbx
+    
+    mov rax, rsi  ; value to set
+    mov rcx, rdx  ; size
+    mov rbx, rdi  ; save destination
+    
+    ; Set data
+    rep stosb
     
     mov rax, rbx  ; return destination
     
@@ -297,14 +320,7 @@ combine_states:
     pop rbp
     ret
 
-; Dummy training routine for the neural network
-    global train_network
-train_network:
-    push rbp
-    mov rbp, rsp
-    xor rax, rax
-    pop rbp
-    ret
+; Training routine is implemented in neural_network.asm
 
 ; Generate output for a stream
 ; rdi = buffer pointer
