@@ -1,3 +1,31 @@
-torch
-gymnasium
-pymysql
+# Core ML libraries with performance optimizations
+torch>=2.1.0          # Latest PyTorch with performance improvements
+gymnasium>=0.29.0     # Updated gym with better performance
+numpy>=1.24.0         # Optimized linear algebra operations
+
+# Database connectivity
+pymysql>=1.1.0        # MySQL connector with performance improvements
+
+# Performance monitoring and optimization
+psutil>=5.9.0         # System performance monitoring
+memory-profiler>=0.61.0  # Memory usage profiling
+py-spy>=0.3.14        # Low-overhead CPU profiler
+
+# Optional GPU acceleration (install if CUDA available)
+# torch-audio>=2.1.0    # Audio processing acceleration
+# torchvision>=0.16.0   # Computer vision acceleration
+
+# Development and testing
+pytest>=7.4.0         # Testing framework
+pytest-benchmark>=4.0.0  # Performance benchmarking
+black>=23.9.0         # Code formatting
+flake8>=6.1.0         # Code linting
+
+# Jupyter for experimentation (optional)
+# jupyter>=1.0.0
+# ipykernel>=6.25.0
+
+# Advanced ML optimizations (optional)
+# numba>=0.58.0         # JIT compilation for NumPy
+# cupy-cuda11x>=12.0.0  # GPU-accelerated NumPy (CUDA 11.x)
+# cupy-cuda12x>=12.0.0  # GPU-accelerated NumPy (CUDA 12.x)
